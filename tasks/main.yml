@@ -1,0 +1,34 @@
+---
+# tasks file for create_user
+- name: Creating Service Account Group
+  group:
+          name: "{{ service_account_name }}"
+          gid: "{{ service_account_groupname_gid }}"
+          state: present
+
+- name: Creating Owner Group
+  group:
+          name: "{{ owner_groupname }}"
+          state: present
+
+- name: Creating User
+  user: 
+          name: "{{ owner_username }}"
+          groups: 
+                  - "{{ service_account_name }}"
+                  - "{{ owner_groupname }}"
+          append: yes
+          uid: "{{ service_account_username_uid }}"
+          home: "{{ owner_username_home }}"
+          shell: "{{ owner_username_shell }}"
+          password: "{{ owner_passwd }}"
+        #   password: "{{ owner_passwd | password_hash('sha512') }}"
+
+
+- name: Creating folder on remote server
+  file:
+          path: "/home/{{ owner_username_home }}/test"
+          state: directory
+          owner: "{{ owner_username }}" # Optional
+          group: "{{ owner_username }}" # Optional
+          mode: '0755' # Optional
