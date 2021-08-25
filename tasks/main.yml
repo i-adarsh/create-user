@@ -25,10 +25,3 @@
         #   password: "{{ owner_passwd | password_hash('sha512') }}"
 
 
-- name: Creating folder on remote server
-  file:
-          path: "/home/{{ owner_username_home }}/test"
-          state: directory
-          owner: "{{ owner_username }}" # Optional
-          group: "{{ owner_username }}" # Optional
-          mode: '0755' # Optional
